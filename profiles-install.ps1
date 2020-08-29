@@ -1,17 +1,17 @@
 Invoke-WebRequest https://fs.ankores.com.ua/s/TDcm3g58w4DDMai/download -OutFile c:\ReIcon.zip
-Expand-Archive -Path C:\ReIcon.zip -DestinationPath "C:\Program Files\RDP Wrapper"
+Expand-Archive -Path C:\ReIcon.zip -DestinationPath "C:\Program Files\RDP Wrapper" -ErrorAction SilentlyContinue
 Remove-Item C:\ReIcon.zip
 
 #configure windows update
-Set-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU -Name AUOptions -Value 4 -ErrorAction Continue
-Set-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU -Name ScheduledInstallDay -Value 1 -ErrorAction Continue
-Set-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU -Name ScheduledInstallTime -Value 3 -ErrorAction Continue
-Set-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU -Name AutoInstallMinorUpdates -Value 1 -ErrorAction Continue
-Set-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU -Name RebootWarningTimeoutEnabled -Value 0 -ErrorAction Continue
-Set-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU -Name RebootRelaunchTimeoutEnabled -Value 0 -ErrorAction Continue
-Set-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU -Name RescheduleWaitTimeEnabled -Value 0 -ErrorAction Continue
-Set-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU -Name NoAutoUpdate -Value 0 -ErrorAction Continue
-Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update" -Name AUOptions -Value 0 -ErrorAction Continue
+Set-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU -Name AUOptions -Value 4 -ErrorAction SilentlyContinue
+Set-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU -Name ScheduledInstallDay -Value 1 -ErrorAction SilentlyContinue
+Set-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU -Name ScheduledInstallTime -Value 3 -ErrorAction SilentlyContinue
+Set-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU -Name AutoInstallMinorUpdates -Value 1 -ErrorAction SilentlyContinue
+Set-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU -Name RebootWarningTimeoutEnabled -Value 0 -ErrorAction SilentlyContinue
+Set-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU -Name RebootRelaunchTimeoutEnabled -Value 0 -ErrorAction SilentlyContinue
+Set-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU -Name RescheduleWaitTimeEnabled -Value 0 -ErrorAction SilentlyContinue
+Set-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU -Name NoAutoUpdate -Value 0 -ErrorAction SilentlyContinue
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update" -Name AUOptions -Value 0 -ErrorAction SilentlyContinue
 cmd.exe /c "UsoClient StartScan"
 cmd.exe /c "UsoClient StartDownload"
 cmd.exe /c "UsoClient StartInstall"
@@ -53,15 +53,15 @@ cmd.exe /c "del c:\users\breachx /s /Q"
 cmd.exe /c "rmdir c:\users\breacha\ /s /Q"
 cmd.exe /c "rmdir c:\users\breach2\ /s /Q"
 cmd.exe /c "rmdir c:\users\breachx\ /s /Q"
-cmd.exe /c "net user $username1 /delete"
-cmd.exe /c "net user $username2 /delete"
-cmd.exe /c "net user $username3 /delete"
+cmd.exe /c "net user breacha /delete"
+cmd.exe /c "net user breach2 /delete"
+cmd.exe /c "net user breachx /delete"
 cmd.exe /c "takeown /f "c:\users\breacha" /r /d y"
 cmd.exe /c "takeown /f "c:\users\breach2" /r /d y"
 cmd.exe /c "takeown /f "c:\users\breachx" /r /d y"
-Remove-Item C:\Users\$username1 -Recurse -Force
-Remove-Item C:\Users\$username2 -Recurse -Force
-Remove-Item C:\Users\$username3 -Recurse -Force 
+Remove-Item C:\Users\breacha -Recurse -Force -ErrorAction SilentlyContinue
+Remove-Item C:\Users\breach2 -Recurse -Force -ErrorAction SilentlyContinue
+Remove-Item C:\Users\breachx -Recurse -Force -ErrorAction SilentlyContinue
 
 #create local users
 New-LocalUser "$username1" -Password $securePassword -FullName "$username1" -Description "User 1"
@@ -116,7 +116,7 @@ New-Item -Path "C:\Users\$username2\AppData\Roaming\Microsoft\Windows\Start Menu
 New-Item -Path "C:\Users\$username3\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup" -Name "onetimestartupscript.bat" -ItemType File -Value $batcode2
 
 #login to profile ro run startup script for shortcuts placement
-New-Item -Path "HKCU:\Software\Microsoft\" -Name "Terminal Server Client" -ErrorAction Continue
+New-Item -Path "HKCU:\Software\Microsoft\" -Name "Terminal Server Client" -ErrorAction SilentlyContinue
 New-ItemProperty -Path "HKCU:\Software\Microsoft\Terminal Server Client" -Name "AuthenticationLevelOverride" -Value ”0”  -PropertyType "DWord" 
 $serverip = $publicip+":33322"
 cmdkey /generic:$publicip /user:$username1 /pass:$password
