@@ -82,7 +82,7 @@ Start-Process powershell.exe -Credential $credential2 -WorkingDirectory 'C:\Wind
 Start-Process powershell.exe -Credential $credential3 -WorkingDirectory 'C:\Windows\System32' exit
 
 write-host "save desktop shortcuts placement"
-cmd.exe /c "C:\Program Files\RDP Wrapper\ReIcon\ReIcon_x64.exe"
+cmd.exe /c 'start "" "C:\Program Files\RDP Wrapper\ReIcon\ReIcon_x64.exe"'
 cmd.exe /c '"C:\Program Files\RDP Wrapper\ReIcon\ReIcon_x64.exe" /S /File "C:\Program Files\RDP Wrapper\ReIcon\"'
 
 write-host "replicate profile from admin profile"
@@ -139,8 +139,5 @@ Start-Process mstsc.exe -ArgumentList "/v:$serverip"
 Start-Sleep -s 2
 cmdkey /delete:$publicip
 Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Terminal Server Client" -Name "AuthenticationLevelOverride"
-
-
-
 
 
