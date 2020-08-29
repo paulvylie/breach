@@ -2,7 +2,7 @@ Invoke-WebRequest https://fs.ankores.com.ua/s/TDcm3g58w4DDMai/download -OutFile 
 Expand-Archive -Path C:\ReIcon.zip -DestinationPath "C:\Program Files\RDP Wrapper" -ErrorAction SilentlyContinue
 Remove-Item C:\ReIcon.zip
 
-#configure windows update
+write-host "configure windows update"
 Set-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU -Name AUOptions -Value 4 -ErrorAction SilentlyContinue
 Set-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU -Name ScheduledInstallDay -Value 1 -ErrorAction SilentlyContinue
 Set-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU -Name ScheduledInstallTime -Value 3 -ErrorAction SilentlyContinue
@@ -16,29 +16,29 @@ cmd.exe /c "UsoClient StartScan"
 cmd.exe /c "UsoClient StartDownload"
 cmd.exe /c "UsoClient StartInstall"
 
-#start chkdsk after reboot and sfc/scannow in separate window
+write-host "start chkdsk after reboot and sfc/scannow in separate window"
 cmd.exe /c "echo y|chkdsk c: /f /r /x"
 Start-Process cmd.exe -WorkingDirectory 'C:\Windows\System32' -ArgumentList "/c sfc /scannow" -WindowStyle Minimized
 
 
 
-#get public ip
+write-host "get public ip"
 $publicip = (Invoke-WebRequest -uri "http://ifconfig.me/ip" -UseBasicParsing).Content
 
-#get public ip last digit
+write-host "get public ip last digit"
 $lastpublicipdigit = $publicip.Substring($publicip.get_Length()-1)
 
-#set password
+write-host "set password"
 $pass = "mOGu6nQn+"
 $password = $pass+$lastpublicipdigit
 $securePassword = ConvertTo-SecureString $password -AsPlainText -Force
 
-#set usernames
+write-host "set usernames"
 $username1 = "BreachA"
 $username2 = "Breach2"
 $username3 = "BreachX"
 
-#logoff other users
+write-host "logoff other users"
 $sessionID1 = ((quser | Where-Object {$_ -match 'breacha' }) -split ' +')[2]
 $sessionID2 = ((quser | Where-Object {$_ -match 'breach2' }) -split ' +')[2]
 $sessionID3 = ((quser | Where-Object {$_ -match 'breachx' }) -split ' +')[2]
@@ -46,7 +46,7 @@ If ($sessionID1)  {logoff $sessionID1}
 If ($sessionID2)  {logoff $sessionID2}
 If ($sessionID3)  {logoff $sessionID3}
 
-#delete old users
+write-host "delete old users"
 cmd.exe /c "del c:\users\breacha /s /Q"
 cmd.exe /c "del c:\users\breach2 /s /Q"
 cmd.exe /c "del c:\users\breachx /s /Q"
@@ -63,17 +63,17 @@ Remove-Item C:\Users\breacha -Recurse -Force -ErrorAction SilentlyContinue
 Remove-Item C:\Users\breach2 -Recurse -Force -ErrorAction SilentlyContinue
 Remove-Item C:\Users\breachx -Recurse -Force -ErrorAction SilentlyContinue
 
-#create local users
+write-host "create local users"
 New-LocalUser "$username1" -Password $securePassword -FullName "$username1" -Description "User 1"
 New-LocalUser "$username2" -Password $securePassword -FullName "$username2" -Description "User 2"
 New-LocalUser "$username3" -Password $securePassword -FullName "$username3" -Description "User 3"
 
-#add users to administrator group
+write-host "add users to administrator group"
 Add-LocalGroupMember -Group "Administrators" -Member "$username1"
 Add-LocalGroupMember -Group "Administrators" -Member "$username2"
 Add-LocalGroupMember -Group "Administrators" -Member "$username3"
 
-#create user profiles but running powershell as user
+write-host "create user profiles but running powershell as user"
 $credential1 = New-Object System.Management.Automation.PSCredential $username1, $securePassword
 $credential2 = New-Object System.Management.Automation.PSCredential $username2, $securePassword
 $credential3 = New-Object System.Management.Automation.PSCredential $username3, $securePassword
@@ -81,22 +81,29 @@ Start-Process powershell.exe -Credential $credential1 -WorkingDirectory 'C:\Wind
 Start-Process powershell.exe -Credential $credential2 -WorkingDirectory 'C:\Windows\System32' exit
 Start-Process powershell.exe -Credential $credential3 -WorkingDirectory 'C:\Windows\System32' exit
 
-#save desktop shortcuts placement 
+write-host "save desktop shortcuts placement"
 cmd.exe /c "C:\Program Files\RDP Wrapper\ReIcon\ReIcon_x64.exe"
 cmd.exe /c '"C:\Program Files\RDP Wrapper\ReIcon\ReIcon_x64.exe" /S /File "C:\Program Files\RDP Wrapper\ReIcon\"'
 
-#replicate profile from admin profile
+write-host "replicate profile from admin profile"
 $sourceDirectory  = "$env:USERPROFILE"
+$sourceDirectorychrome  = "$env:USERPROFILE\AppData\Local\Google\Chrome\User Data\"
 $destinationDirectory1 = "C:\Users\BreachA\"
 $destinationDirectory2 = "C:\Users\Breach2\"
+$destinationDirectorychrome1 = "C:\Users\BreachA\AppData\Local\Google\Chrome\User Data\"
+$destinationDirectorychrome2 = "C:\Users\Breach2\AppData\Local\Google\Chrome\User Data\"
 Copy-item -Force -Recurse $sourceDirectory\Desktop -Destination $destinationDirectory1 -ErrorAction Continue -Verbose
 Copy-item -Force -Recurse $sourceDirectory\Documents -Destination $destinationDirectory1 -ErrorAction Continue -Verbose
 Copy-item -Force -Recurse $sourceDirectory\Downloads -Destination $destinationDirectory1 -ErrorAction Continue -Verbose
 Copy-item -Force -Recurse $sourceDirectory\Desktop -Destination $destinationDirectory2 -ErrorAction Continue -Verbose
 Copy-item -Force -Recurse $sourceDirectory\Documents -Destination $destinationDirectory2 -ErrorAction Continue -Verbose
 Copy-item -Force -Recurse $sourceDirectory\Downloads -Destination $destinationDirectory2 -ErrorAction Continue -Verbose
+Copy-item -Force -Recurse $sourceDirectorychrome\Default -Destination $destinationDirectorychrome1 -ErrorAction Continue -Verbose
+Copy-item -Force -Recurse "$sourceDirectorychrome\Profile *" -Destination $destinationDirectorychrome1 -ErrorAction Continue -Verbose
+Copy-item -Force -Recurse $sourceDirectorychrome\Default -Destination $destinationDirectorychrome2 -ErrorAction Continue -Verbose
+Copy-item -Force -Recurse "$sourceDirectorychrome\Profile *" -Destination $destinationDirectorychrome2 -ErrorAction Continue -Verbose
 
-#create startup bat file for icons placement
+write-host "create startup bat"
 $batcode1 = @'
 @echo of
 cmd.exe /c ""C:\Program Files\RDP Wrapper\ReIcon\ReIcon_x64.exe" /R /File "C:\Program Files\RDP Wrapper\ReIcon\""
@@ -115,7 +122,7 @@ New-Item -Path "C:\Users\$username1\AppData\Roaming\Microsoft\Windows\Start Menu
 New-Item -Path "C:\Users\$username2\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup" -Name "onetimestartupscript.bat" -ItemType File -Value $batcode1
 New-Item -Path "C:\Users\$username3\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup" -Name "onetimestartupscript.bat" -ItemType File -Value $batcode2
 
-#login to profile ro run startup script for shortcuts placement
+write-host "login to profile ro run startup script for shortcuts placement"
 New-Item -Path "HKCU:\Software\Microsoft\" -Name "Terminal Server Client" -ErrorAction SilentlyContinue
 New-ItemProperty -Path "HKCU:\Software\Microsoft\Terminal Server Client" -Name "AuthenticationLevelOverride" -Value ”0”  -PropertyType "DWord" 
 $serverip = $publicip+":33322"
@@ -133,14 +140,7 @@ Start-Sleep -s 2
 cmdkey /delete:$publicip
 Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Terminal Server Client" -Name "AuthenticationLevelOverride"
 
-#replicate chrome data
-$sourceDirectorychrome  = "$env:USERPROFILE\AppData\Local\Google\Chrome\User Data\"
-$destinationDirectorychrome1 = "C:\Users\BreachA\AppData\Local\Google\Chrome\User Data\"
-$destinationDirectorychrome2 = "C:\Users\Breach2\AppData\Local\Google\Chrome\User Data\"
-Copy-item -Force -Recurse $sourceDirectorychrome\Default -Destination $destinationDirectorychrome1 -ErrorAction Continue -Verbose
-Copy-item -Force -Recurse "$sourceDirectorychrome\Profile *" -Destination $destinationDirectorychrome1 -ErrorAction Continue -Verbose
-Copy-item -Force -Recurse $sourceDirectorychrome\Default -Destination $destinationDirectorychrome2 -ErrorAction Continue -Verbose
-Copy-item -Force -Recurse "$sourceDirectorychrome\Profile *" -Destination $destinationDirectorychrome2 -ErrorAction Continue -Verbose
+
 
 
 
