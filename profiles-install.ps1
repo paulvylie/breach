@@ -64,9 +64,9 @@ Remove-Item C:\Users\breach2 -Recurse -Force -ErrorAction SilentlyContinue
 Remove-Item C:\Users\breachx -Recurse -Force -ErrorAction SilentlyContinue
 
 write-host "create local users"
-New-LocalUser "$username1" -Password $securePassword -FullName "$username1" -Description "User 2" -PasswordNeverExpires 1
-New-LocalUser "$username2" -Password $securePassword -FullName "$username2" -Description "User 3" -PasswordNeverExpires 1
-New-LocalUser "$username3" -Password $securePassword -FullName "$username3" -Description "User 4" -PasswordNeverExpires 1
+New-LocalUser "$username1" -Password $securePassword -FullName "$username1" -Description "User 2" -PasswordNeverExpires
+New-LocalUser "$username2" -Password $securePassword -FullName "$username2" -Description "User 3" -PasswordNeverExpires
+New-LocalUser "$username3" -Password $securePassword -FullName "$username3" -Description "User 4" -PasswordNeverExpires
 
 write-host "add users to administrator group"
 Add-LocalGroupMember -Group "Administrators" -Member "$username1"
