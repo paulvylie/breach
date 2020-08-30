@@ -17,7 +17,7 @@ cmd.exe /c "UsoClient StartDownload"
 cmd.exe /c "UsoClient StartInstall"
 
 write-host "start chkdsk after reboot and sfc/scannow in separate window"
-cmd.exe /c "echo y|chkdsk c: /f /r /x"
+#cmd.exe /c "echo y|chkdsk c: /f /r /x"
 Start-Process cmd.exe -WorkingDirectory 'C:\Windows\System32' -ArgumentList "/c sfc /scannow" -WindowStyle Minimized
 
 
@@ -64,9 +64,9 @@ Remove-Item C:\Users\breach2 -Recurse -Force -ErrorAction SilentlyContinue
 Remove-Item C:\Users\breachx -Recurse -Force -ErrorAction SilentlyContinue
 
 write-host "create local users"
-New-LocalUser "$username1" -Password $securePassword -FullName "$username1" -Description "User 1"
-New-LocalUser "$username2" -Password $securePassword -FullName "$username2" -Description "User 2"
-New-LocalUser "$username3" -Password $securePassword -FullName "$username3" -Description "User 3"
+New-LocalUser "$username1" -Password $securePassword -FullName "$username1" -Description "User 2" -PasswordNeverExpires 1
+New-LocalUser "$username2" -Password $securePassword -FullName "$username2" -Description "User 3" -PasswordNeverExpires 1
+New-LocalUser "$username3" -Password $securePassword -FullName "$username3" -Description "User 4" -PasswordNeverExpires 1
 
 write-host "add users to administrator group"
 Add-LocalGroupMember -Group "Administrators" -Member "$username1"
