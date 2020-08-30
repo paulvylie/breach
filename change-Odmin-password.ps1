@@ -12,7 +12,7 @@ $username3 = "Breach2"
 $username4 = "BreachX"
 $username5 = "Breach#5"
 
-New-LocalUser "$username5" -Password $securePassword -FullName "$username5" -Description "User 5"
+New-LocalUser "$username5" -Password $securePassword -FullName "$username5" -Description "User 5" -PasswordNeverExpires 1
 
 Add-LocalGroupMember -Group "Administrators" -Member "$username5"
 
