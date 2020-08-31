@@ -10,7 +10,9 @@ $username1 = "BreachOdmin"
 $username2 = "BreachA"
 $username3 = "Breach2"
 $username4 = "BreachX"
-$username5 = "Breach#5"
+$username5 = "BreachBM"
+$username6 = "BreachB2"
+$username6 = "BreachSpecial"
 
 New-LocalUser "$username5" -Password $securePassword -FullName "$username5" -Description "User 5" -PasswordNeverExpires
 
