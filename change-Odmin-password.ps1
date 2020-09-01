@@ -2,7 +2,7 @@ $publicip = (Invoke-WebRequest -uri "http://ifconfig.me/ip" -UseBasicParsing).Co
 
 $lastpublicipdigit = $publicip.Substring($publicip.get_Length()-1)
 
-$pass = "mOGu6nQn+"
+$pass = ""
 $password = $pass+$lastpublicipdigit
 $securePassword = ConvertTo-SecureString $password -AsPlainText -Force
 
