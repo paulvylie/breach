@@ -33,8 +33,8 @@ $credential2 = New-Object System.Management.Automation.PSCredential $username2, 
 $credential3 = New-Object System.Management.Automation.PSCredential $username3, $securePassword
 $credential4 = New-Object System.Management.Automation.PSCredential $username4, $securePassword
 $credential5 = New-Object System.Management.Automation.PSCredential $username5, $securePassword
-$credential6 = New-Object System.Management.Automation.PSCredential $username5, $securePassword
-$credential7 = New-Object System.Management.Automation.PSCredential $username5, $securePassword
+$credential6 = New-Object System.Management.Automation.PSCredential $username6, $securePassword
+$credential7 = New-Object System.Management.Automation.PSCredential $username7, $securePassword
 
 Start-Process powershell.exe -Credential $credential5 -WorkingDirectory 'C:\Windows\System32' exit
 Start-Process powershell.exe -Credential $credential6 -WorkingDirectory 'C:\Windows\System32' exit
